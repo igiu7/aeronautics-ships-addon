@@ -1,4 +1,4 @@
-# Aeronautics Valoris
+# Aeronautics Ships Addon
 
 Dodatek do **Create Aeronautics / Create Simulated** działający na **Sable** (NeoForge 1.21.1).
 
