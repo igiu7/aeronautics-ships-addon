@@ -1,94 +1,91 @@
 # Aeronautics Ships Addon
 
-Dodatek do **Create Aeronautics / Create Simulated** działający na **Sable** (NeoForge 1.21.1).
+An addon for **Create Aeronautics / Create Simulated** that runs on **Sable** (NeoForge 1.21.1).
 
-## Co robi
+## What it does
 
-**Ciąg z żagli.** Każdy żagiel na statku (sub-levelu Sable) daje mały ciąg w stronę swojego przodu.
-Liczą się żagle postawione bezpośrednio na statku oraz żagle na kontrapcjach (np. mechanical bearing) postawionych na statku.
-Ramki żagli (sail frame) i śmigła z Aeronautics nie dają ciągu z wiatru.
-Całkowity ciąg = `baseThrustPerSail × liczba_żagli^sailCountExponent × mnożnik_wiatru`.
+**Sail thrust.** Every sail on a ship (a Sable sub-level) produces a small thrust toward its front.
+Sails placed directly on the ship count, and so do sails on contraptions (e.g. a mechanical bearing) placed on the ship.
+Sail frames and propellers from Aeronautics get no thrust from wind.
+Total thrust = `baseThrustPerSail × sail_count^sailCountExponent × wind_multiplier`.
 
-**Przód żagla.**
-- Zwykły żagiel Create: przód to strona *od gracza* w chwili stawiania (Create i tak zapisuje kierunek). Klucz go obraca.
-- Symmetric Sail: dostaje nową właściwość `front_positive`.
-- Każdy żagiel (też dostawiany do innego żagla przez placement helper) dostaje przód w stronę, w którą patrzy gracz, który go stawia. Na statku kierunek liczony jest w układzie statku.
-  **Klucz (Wrench) w płaską stronę** odwraca przód/tył. Klucz w krawędź obraca jak zwykle, Shift+klucz podnosi blok.
-- Po postawieniu/odwróceniu dostajesz komunikat z kierunkiem. Gdy patrzysz na żagiel, widzisz złotą strzałkę
-  z przodu i napis pod celownikiem z kierunkiem i aktualnym mnożnikiem wiatru.
+**Sail front.**
+- Regular Create sail: the front is the side *facing away from the player* at the moment of placement (Create stores the direction anyway). A wrench rotates it.
+- Symmetric Sail: gets a new property, `front_positive`.
+- Every sail (including ones placed against another sail with the placement helper) gets its front toward the direction the placing player is looking. On a ship, the direction is calculated in the ship's coordinate space.
+  **Wrench on a flat face** flips front/back. Wrench on an edge rotates as usual, and Shift+wrench picks the block up.
+- After placing or flipping, you get a message with the direction. When you look at a sail, you see a golden arrow on its front and text under the crosshair showing the direction and the current wind multiplier.
 
-**Wiatr w stylu Sea of Thieves.**
-- Jeden globalny wiatr na wymiar (z niebem). Co 15 minut wybiera nowy kierunek i stopniowo do niego skręca (1.5°/s). Deszcz i burza go wzmacniają.
-- Gęste białe smugi wiatru pojawiają się tylko wokół żagli statków w pobliżu (serwer co sekundę wysyła pozycje żagli, także tych na łożyskach). Falują i czasem robią pętlę (własny renderer, bez dodatkowych bibliotek).
-- Mnożnik ciągu zależy od kąta między **przodem żagla a wiatrem**:
-  wiatr w plecy żagla → do ×2.5, bokiem → ~×1, prosto w przód → ×0.15 (przy pełnej sile wiatru; przy słabym wietrze dąży do ×1).
+**Sea of Thieves-style wind.**
+- There is one global wind per dimension (with a sky). Every 15 minutes it picks a new direction and gradually turns toward it (1.5°/s). Rain and storms strengthen it.
+- Dense white wind streaks appear only around nearby ship sails (the server sends sail positions every second, including sails on bearings). They wave and sometimes loop (custom renderer, no extra libraries).
+- The thrust multiplier depends on the angle between the **sail's front and the wind**:
+  wind at the sail's back gives up to ×2.5, wind from the side gives ~×1, and wind straight into the front gives ×0.15 (at full wind strength; at weak wind it tends toward ×1).
 
-**Żagle na łożysku (jak reje w SoT).** Statek zawsze płynie w stronę, w którą żagiel patrzył przy złożeniu kontrapcji
-(czyli "przód statku"). Obrót łożyska nie zmienia kierunku ciągu, tylko to, ile wiatru złapiesz.
-Ustaw łożysko tak, żeby przód żagli był jak najbardziej z wiatrem. Obrót ponad `maxSailTurnAngle` (90°) nic już nie daje,
-więc nie da się płynąć pod wiatr, odwracając żagle tyłem.
-Obrócone żagle nie przechylają statku na burtę: moment od aerodynamiki Sable dla żagli jest wyłączony (`sailAerodynamicTorque = 0`), a opór i dryf zostają.
+**Sails on a bearing (like yards in SoT).** The ship always travels in the direction the sail was facing when the contraption was assembled (i.e. the "ship's front"). Rotating the bearing doesn't change the thrust direction, only how much wind you catch.
+Set the bearing so the sails' front is as downwind as possible. Rotation beyond `maxSailTurnAngle` (90°) gives no further benefit, so you can't sail upwind by turning the sails backwards.
+Rotated sails don't heel the ship over: Sable's aerodynamic torque for sails is disabled (`sailAerodynamicTorque = 0`), while drag and drift remain.
 
-## Ster (Rudder)
+## Rudder
 
-Blok **Ster** to blok kinetyczny Create. Jest w zakładce Aeronautics Valoris, receptura: `andesite casing + shaft / kłoda + deski / kłoda + deski` (`AS / LP / LP`).
+The **Rudder** block is a Create kinetic block. It's in the Aeronautics Valoris tab, with the recipe `andesite casing + shaft / log + planks / log + planks` (`AS / LP / LP`).
 
-- **Wał wchodzi od góry.** Podłącz go do **Steering Wheel** z Create Simulated (wał w dół do steru, przez przekładnie, jeśli trzeba).
-- Steering Wheel obraca wał o tyle stopni, o ile obrócisz koło. Ster liczy obrót wału i skaluje go:
-  `wychylenie = obrót_wału / shaftDegreesForFullDeflection × maxDeflection`. Domyślnie ±180° koła daje ±45° płetwy.
-  Jeśli w kole ustawisz inny limit kąta (scroll), ustaw tę samą wartość w configu `shaftDegreesForFullDeflection`.
-  Przekładnie zmieniające prędkość (np. duże i małe koło zębate) też zmieniają skalę.
-- **Stawianie:** płetwa zawsze w stronę gracza, czyli tę stronę bloku, z której na niego patrzysz. Przód statku to strona przeciwna (tam jest wspornik do kadłuba).
-- Działa tylko **w wodzie** (blok steru albo blok pod nim w wodzie). Skręca już od 0 m/s.
-- Skręt: `ω = maxTurnRate × skuteczność × (s + (1−s) × v / (v + speedForHalfTurnRate))`, gdzie `s = stationaryTurnFactor` (35% skrętu dostępne w miejscu).
-  Domyślnie maxTurnRate = 40°/s. Szybciej oznacza szybszy obrót, ale promień koła `r = v/ω` rośnie z prędkością.
-  Skuteczność jest największa przy wychyleniu 45°. Moment jest ograniczony (`torquePerSpeed × liczba sterów × (1 + v)`), więc ciężkie statki reagują wolniej.
-- Na wstecznym ster działa odwrotnie i słabiej.
-- Jeśli koło skręca statek w złą stronę: `invertSteering = true` w sekcji `[rudder]` server configu.
-- Ster śledzi dokładny obrót koła (tak jak Mechanical Bearing), więc nie rozjeżdża się po wielu skrętach. Jeśli płetwa nie stoi prosto przy kole na 0°, kliknij ster **kluczem** (bez Shifta), żeby go wyśrodkować.
-- Ster na mechanical bearingu też działa (obrót bearinga to wychylenie), ale zalecany jest wał ze Steering Wheel.
+- **The shaft enters from the top.** Connect it to a **Steering Wheel** from Create Simulated (shaft down to the rudder, through gearboxes if needed).
+- The Steering Wheel turns the shaft by as many degrees as you turn the wheel. The rudder counts the shaft rotation and scales it:
+  `deflection = shaft_rotation / shaftDegreesForFullDeflection × maxDeflection`. By default, ±180° of wheel gives ±45° of fin.
+  If you set a different angle limit on the wheel (scroll), set the same value in the `shaftDegreesForFullDeflection` config.
+  Gearing that changes speed (e.g. a large and small cogwheel) also changes the scale.
+- **Placement:** the fin always points toward the player, i.e. the side of the block you're looking at it from. The ship's front is the opposite side (where the bracket to the hull is).
+- It works only **in water** (the rudder block or the block below it in water). It turns even from 0 m/s.
+- Turning: `ω = maxTurnRate × effectiveness × (s + (1−s) × v / (v + speedForHalfTurnRate))`, where `s = stationaryTurnFactor` (35% of turning is available while stationary).
+  The default maxTurnRate is 40°/s. Faster means a faster turn, but the turning circle radius `r = v/ω` grows with speed.
+  Effectiveness is highest at 45° deflection. Torque is limited (`torquePerSpeed × rudder_count × (1 + v)`), so heavy ships respond more slowly.
+- In reverse, the rudder works the opposite way and more weakly.
+- If the wheel turns the ship the wrong way: set `invertSteering = true` in the `[rudder]` section of the server config.
+- The rudder tracks the wheel's exact rotation (like a Mechanical Bearing), so it doesn't drift out of sync after many turns. If the fin isn't straight when the wheel is at 0°, click the rudder with a **wrench** (without Shift) to center it.
+- A rudder on a mechanical bearing also works (the bearing's rotation is the deflection), but a shaft from a Steering Wheel is recommended.
 
-## Kotwica (Anchor Winch)
+## Anchor (Anchor Winch)
 
-Blok **Kabestan z kotwicą**, receptura: `łańcuch` na górze, `deski / kłoda / deski` w środku, `sztabka / blok żelaza / sztabka` na dole.
+The **Anchor Winch** block has the recipe: `chain` on top, `planks / log / planks` in the middle, `ingot / iron block / ingot` on the bottom.
 
-- **Stawianie:** stań na pokładzie i patrz w stronę burty, za którą ma iść kotwica. Belka z kołem linowym wystaje właśnie tam. Najlepiej stawiać przy samej krawędzi pokładu.
-- **Prawy klik:**
-  - kotwica schowana → zrzut. Kotwica opada na linie (`dropSpeed`, 8 bloków/s) pod kołem linowym i płynie razem ze statkiem.
-  - kotwica opada albo leży na dnie → wciąganie. Trwa `głębokość / raiseSpeed` (1.5 bloku/s), np. 15 bloków to 10 s. Czas pokazuje się nad paskiem.
-  - podczas wciągania → ponowny zrzut.
-- **Na dnie:** kotwica leży nieruchomo, żagle tego statku przestają pchać, a statek zostaje **całkowicie zatrzymany**. Prędkość pozioma i obrót są wygaszane, a statek jest ściągany z powrotem nad miejsce chwycenia, więc wiatr i żagle go nie przesuną. Pion i przechyły zostają fizyce (High Seas / Sable).
-- Jeśli lina (`maxRopeLength`, 128) skończy się przed dnem, kotwica tylko wisi i nie trzyma.
-- Kotwica to encja; lina jest rysowana od jej ucha do koła linowego kabestanu i podąża za statkiem.
-- Zniszczenie kabestanu usuwa kotwicę.
+- **Placement:** stand on deck and look toward the side of the ship where the anchor should go. The beam with the rope wheel sticks out that way. It's best placed right at the edge of the deck.
+- **Right click:**
+  - anchor stowed → drop. The anchor falls on a rope (`dropSpeed`, 8 blocks/s) below the rope wheel and travels with the ship.
+  - anchor falling or resting on the seabed → raise. This takes `depth / raiseSpeed` (1.5 blocks/s), e.g. 15 blocks takes 10 s. The time is shown above the bar.
+  - while raising → drop again.
+- **On the seabed:** the anchor stays still, this ship's sails stop pushing, and the ship is **completely stopped**. Horizontal speed and rotation are damped, and the ship is pulled back over the spot where the anchor caught, so wind and sails can't move it. Vertical motion and tilt are left to physics (High Seas / Sable).
+- If the rope (`maxRopeLength`, 128) runs out before reaching the bottom, the anchor just hangs and doesn't hold.
+- The anchor is an entity. The rope is drawn from its eye to the winch's rope wheel and follows the ship.
+- Destroying the winch removes the anchor.
 
-## Stabilność
+## Stability
 
-- **Stabilizator** (statki z żaglami albo sterem, unoszące się na wodzie): prostuje przechył na burtę i na dziób/rufę i tłumi kołysanie, jak ciężki balast w kilu. Nie dotyka obrotu w poziomie, więc skręcanie działa normalnie. Do 3° przechyłu zostaje (fale High Seas).
-- **Kil** (gdy ster jest w wodzie): boczny poślizg jest wygaszany w środku masy, a jego część zamienia się w ruch do przodu. Statek w zakręcie płynie za dziobem, zamiast sunąć bokiem i kłaść się na burtę.
-- Ustawienia są w sekcji `[stability]`.
+- **Stabilizer** (ships with sails or a rudder that float on water): straightens out roll and pitch and damps swaying, like heavy ballast in the keel. It doesn't affect horizontal rotation, so turning works normally. Up to 3° of tilt is left alone (High Seas waves).
+- **Keel** (when the rudder is in water): sideways slip is damped at the center of mass, and part of it is converted into forward motion. In a turn, the ship follows its bow instead of sliding sideways and heeling over.
+- Settings are in the `[stability]` section.
 
-## Komendy
+## Commands
 
-- `/wind` pokazuje aktualny wiatr.
-- `/wind set <kurs> [siła]` (op) ustawia i blokuje wiatr. Kurs to strona, w którą wieje: 0 = N, 90 = E, 180 = S, 270 = W. Siła 0–1.
-- `/wind random` (op) odblokowuje i losuje nowy wiatr.
+- `/wind` shows the current wind.
+- `/wind set <heading> [strength]` (op) sets and locks the wind. Heading is the direction the wind blows toward: 0 = N, 90 = E, 180 = S, 270 = W. Strength is 0–1.
+- `/wind random` (op) unlocks the wind and rolls a new one.
 
-## Konfiguracja
+## Configuration
 
-- `serverconfig/aeronauticsvaloris-server.toml` (w folderze świata) zawiera ciąg, mnożniki i zachowanie wiatru.
-  Na start warto ruszać `baseThrustPerSail`, `windMaxMultiplier` i `applyThrustAtCenterOfMass`.
-- `config/aeronauticsvaloris-client.toml` zawiera smugi, HUD i strzałkę.
+- `serverconfig/aeronauticsvaloris-server.toml` (in the world folder) holds thrust, multipliers, and wind behavior.
+  To start, try adjusting `baseThrustPerSail`, `windMaxMultiplier`, and `applyThrustAtCenterOfMass`.
+- `config/aeronauticsvaloris-client.toml` holds the streaks, HUD, and arrow.
 
-Oba pliki można też edytować w grze: Mods → Aeronautics Valoris → Config.
+Both files can also be edited in-game: Mods → Aeronautics Valoris → Config.
 
-## Budowanie
+## Building
 
-1. Skopiuj zawartość do swojego projektu MDK (zostaw swój `gradlew`, `gradle/wrapper`).
-   Jeśli Twoje MDK ma inną wersję pluginu `net.neoforged.moddev`, zostaw swoją.
-2. Sable i jego API pobierają się z `maven.blamejared.com` (`sable_version` w `gradle.properties` ustaw na wersję z instancji).
-   Jeśli maven nie działa, wrzuć jary Sable (+ sable-companion, veil) do `libs/`.
-3. Do `runClient` wrzuć jary Create, Create Aeronautics (bundled) i Sable do `run-mods/`.
+1. Copy the contents into your MDK project (keep your own `gradlew` and `gradle/wrapper`).
+   If your MDK uses a different version of the `net.neoforged.moddev` plugin, keep yours.
+2. Sable and its API are downloaded from `maven.blamejared.com` (set `sable_version` in `gradle.properties` to the version from your instance).
+   If the maven doesn't work, put the Sable jars (+ sable-companion, veil) in `libs/`.
+3. For `runClient`, put the Create, Create Aeronautics (bundled), and Sable jars in `run-mods/`.
 4. `./gradlew build` → `build/libs/aeronauticsvaloris-1.0.0.jar`.
 
-Wymagane w grze: Create, Create Simulated/Aeronautics, Sable.
+Required in-game: Create, Create Simulated/Aeronautics, Sable.
