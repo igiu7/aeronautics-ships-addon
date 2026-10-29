@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "aeronauticsvaloris:block/rudder"
+    },
+    "facing=east": {
+      "model": "aeronauticsvaloris:block/rudder",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeronauticsvaloris:block/rudder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeronauticsvaloris:block/rudder",
+      "y": 270
+    }
+  }
+}

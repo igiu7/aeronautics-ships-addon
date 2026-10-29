@@ -1,0 +1,177 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "aeronauticsvaloris:block/rudder_post",
+    "post": "aeronauticsvaloris:block/rudder_post",
+    "blade": "aeronauticsvaloris:block/rudder_blade",
+    "iron": "aeronauticsvaloris:block/rudder_iron",
+    "casing": "create:block/andesite_casing"
+  },
+  "elements": [
+    {
+      "name": "stock",
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        10,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#post"
+        },
+        "south": {
+          "texture": "#post"
+        },
+        "east": {
+          "texture": "#post"
+        },
+        "west": {
+          "texture": "#post"
+        },
+        "up": {
+          "texture": "#post"
+        },
+        "down": {
+          "texture": "#post"
+        }
+      }
+    },
+    {
+      "name": "blade",
+      "from": [
+        7.25,
+        3,
+        -4
+      ],
+      "to": [
+        8.75,
+        10.5,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blade"
+        },
+        "south": {
+          "texture": "#blade"
+        },
+        "east": {
+          "texture": "#blade"
+        },
+        "west": {
+          "texture": "#blade"
+        },
+        "up": {
+          "texture": "#blade"
+        },
+        "down": {
+          "texture": "#blade"
+        }
+      }
+    },
+    {
+      "name": "tip",
+      "from": [
+        7.5,
+        4,
+        -5
+      ],
+      "to": [
+        8.5,
+        9.5,
+        -4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blade"
+        },
+        "south": {
+          "texture": "#blade"
+        },
+        "east": {
+          "texture": "#blade"
+        },
+        "west": {
+          "texture": "#blade"
+        },
+        "up": {
+          "texture": "#blade"
+        },
+        "down": {
+          "texture": "#blade"
+        }
+      }
+    },
+    {
+      "name": "band_low",
+      "from": [
+        7,
+        4.5,
+        -3.5
+      ],
+      "to": [
+        9,
+        5.5,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "name": "band_high",
+      "from": [
+        7,
+        8,
+        -3.5
+      ],
+      "to": [
+        9,
+        9,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    }
+  ]
+}

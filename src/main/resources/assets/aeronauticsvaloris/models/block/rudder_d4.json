@@ -1,0 +1,279 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "aeronauticsvaloris:block/rudder_blade",
+    "blade": "aeronauticsvaloris:block/rudder_blade",
+    "post": "aeronauticsvaloris:block/rudder_post",
+    "iron": "aeronauticsvaloris:block/rudder_iron"
+  },
+  "elements": [
+    {
+      "name": "post",
+      "from": [
+        6,
+        0,
+        12.5
+      ],
+      "to": [
+        10,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#post"
+        },
+        "south": {
+          "texture": "#post"
+        },
+        "east": {
+          "texture": "#post"
+        },
+        "west": {
+          "texture": "#post"
+        },
+        "up": {
+          "texture": "#post"
+        },
+        "down": {
+          "texture": "#post"
+        }
+      }
+    },
+    {
+      "name": "pintle",
+      "from": [
+        5.5,
+        2,
+        12
+      ],
+      "to": [
+        10.5,
+        4,
+        16.2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "name": "pintle",
+      "from": [
+        5.5,
+        12,
+        12
+      ],
+      "to": [
+        10.5,
+        14,
+        16.2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      }
+    },
+    {
+      "name": "blade",
+      "from": [
+        7.25,
+        1,
+        1.5
+      ],
+      "to": [
+        8.75,
+        15,
+        12.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blade"
+        },
+        "south": {
+          "texture": "#blade"
+        },
+        "east": {
+          "texture": "#blade"
+        },
+        "west": {
+          "texture": "#blade"
+        },
+        "up": {
+          "texture": "#blade"
+        },
+        "down": {
+          "texture": "#blade"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "blade_tip",
+      "from": [
+        7.5,
+        3,
+        0
+      ],
+      "to": [
+        8.5,
+        13,
+        1.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blade"
+        },
+        "south": {
+          "texture": "#blade"
+        },
+        "east": {
+          "texture": "#blade"
+        },
+        "west": {
+          "texture": "#blade"
+        },
+        "up": {
+          "texture": "#blade"
+        },
+        "down": {
+          "texture": "#blade"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "band_low",
+      "from": [
+        7,
+        3,
+        2
+      ],
+      "to": [
+        9,
+        4.5,
+        12.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "band_high",
+      "from": [
+        7,
+        11.5,
+        2
+      ],
+      "to": [
+        9,
+        13,
+        12.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#iron"
+        },
+        "south": {
+          "texture": "#iron"
+        },
+        "east": {
+          "texture": "#iron"
+        },
+        "west": {
+          "texture": "#iron"
+        },
+        "up": {
+          "texture": "#iron"
+        },
+        "down": {
+          "texture": "#iron"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    }
+  ]
+}

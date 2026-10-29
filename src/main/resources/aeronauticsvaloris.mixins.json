@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.aerovaloris.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "SymmetricSailBlockMixin",
+    "ServerSubLevelMixin",
+    "PersistentEntitySectionManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

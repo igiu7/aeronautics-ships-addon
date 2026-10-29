@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "deployed=false,facing=north": {
+      "model": "aeronauticsvaloris:block/anchor_winch_stowed"
+    },
+    "deployed=true,facing=north": {
+      "model": "aeronauticsvaloris:block/anchor_winch"
+    },
+    "deployed=false,facing=east": {
+      "model": "aeronauticsvaloris:block/anchor_winch_stowed",
+      "y": 90
+    },
+    "deployed=true,facing=east": {
+      "model": "aeronauticsvaloris:block/anchor_winch",
+      "y": 90
+    },
+    "deployed=false,facing=south": {
+      "model": "aeronauticsvaloris:block/anchor_winch_stowed",
+      "y": 180
+    },
+    "deployed=true,facing=south": {
+      "model": "aeronauticsvaloris:block/anchor_winch",
+      "y": 180
+    },
+    "deployed=false,facing=west": {
+      "model": "aeronauticsvaloris:block/anchor_winch_stowed",
+      "y": 270
+    },
+    "deployed=true,facing=west": {
+      "model": "aeronauticsvaloris:block/anchor_winch",
+      "y": 270
+    }
+  }
+}
